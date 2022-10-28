@@ -12,7 +12,7 @@ subtest 'foo' => sub {
     my $items = [ Item->new( name => 'foo', sell_in => 0, quality => 0 ) ];
     my $app = GildedRose->new( items => $items );
     $app->update_quality();
-    is( $app->{items}->[0]->{name}, 'fixme' );
+    is( $app->{items}->[0]->{name}, 'foo' );
 };
 
 done_testing();

@@ -62,6 +62,7 @@ sub update_quality {
 }
 
 sub update_item_quality {
+    my $item = shift;
     if ( !is_aged_brie($item)
       && !is_backstage_pass($item) )
     {

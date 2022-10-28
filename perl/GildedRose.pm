@@ -30,31 +30,31 @@ sub is_hand_of_ragnaros {
 
 sub update_quality {
     my $self = shift;
-    for my $item ( $self->items()  ) {
+    for my $item ( $self->items() ) {
         if ( !is_aged_brie($item)
           && !is_backstage_pass($item) )
         {
             if ( $item->{quality} > 0 ) {
                 if ( !is_hand_of_ragnaros($item) ) {
-                    $item->{quality} = $item->{quality} - 1;
+                    $item->{quality}--;
                 }
             }
         }
         else {
             if ( $item->{quality} < 50 ) {
-                $item->{quality} = $item->{quality} + 1;
+                $item->{quality}++;
 
                 if ( is_backstage_pass($item) )
                 {
                     if ( $item->{sell_in} < 11 ) {
                         if ( $item->{quality} < 50 ) {
-                            $item->{quality} = $item->{quality} + 1;
+                            $item->{quality}++;
                         }
                     }
 
                     if ( $item->{sell_in} < 6 ) {
                         if ( $item->{quality} < 50 ) {
-                            $item->{quality} = $item->{quality} + 1;
+                            $item->{quality}++;
                         }
                     }
                 }
@@ -62,7 +62,7 @@ sub update_quality {
         }
 
         if ( !is_hand_of_ragnaros($item) ) {
-            $item->{sell_in} = $item->{sell_in} - 1;
+            $item->{sell_in}--;
         }
 
         if ( $item->{sell_in} < 0 ) {
@@ -71,17 +71,17 @@ sub update_quality {
                 {
                     if ( $item->{quality} > 0 ) {
                         if ( !is_hand_of_ragnaros($item) ) {
-                            $item->{quality} = $item->{quality} - 1;
+                            $item->{quality}--;
                         }
                     }
                 }
                 else {
-                    $item->{quality} = $item->{quality} - $item->{quality};
+                    $item->{quality}--;
                 }
             }
             else {
                 if ( $item->{quality} < 50 ) {
-                    $item->{quality} = $item->{quality} + 1;
+                    $item->{quality}++;
                 }
             }
         }

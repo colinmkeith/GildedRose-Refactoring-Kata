@@ -8,9 +8,14 @@ sub new {
     return bless \%attrs, $class;
 }
 
+sub items {
+  my $self = shift;
+  return @{ $self->{items} };
+}
+
 sub update_quality {
     my $self = shift;
-    for my $item ( @{ $self->{items} } ) {
+    for my $item ( $self->items()  ) {
         if (   $item->{name} ne 'Aged Brie'
             && $item->{name} ne 'Backstage passes to a TAFKAL80ETC concert' )
         {

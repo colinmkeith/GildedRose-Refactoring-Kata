@@ -31,35 +31,7 @@ sub is_hand_of_ragnaros {
 sub update_quality {
     my $self = shift;
     for my $item ( $self->items() ) {
-        if ( !is_aged_brie($item)
-          && !is_backstage_pass($item) )
-        {
-            if ( $item->{quality} > 0 ) {
-                if ( !is_hand_of_ragnaros($item) ) {
-                    $item->{quality}--;
-                }
-            }
-        }
-        else {
-            if ( $item->{quality} < 50 ) {
-                $item->{quality}++;
-
-                if ( is_backstage_pass($item) )
-                {
-                    if ( $item->{sell_in} < 11 ) {
-                        if ( $item->{quality} < 50 ) {
-                            $item->{quality}++;
-                        }
-                    }
-
-                    if ( $item->{sell_in} < 6 ) {
-                        if ( $item->{quality} < 50 ) {
-                            $item->{quality}++;
-                        }
-                    }
-                }
-            }
-        }
+        update_item_quality($item);
 
         if ( !is_hand_of_ragnaros($item) ) {
             $item->{sell_in}--;
@@ -87,6 +59,38 @@ sub update_quality {
         }
     }
     return;
+}
+
+sub update_item_quality {
+    if ( !is_aged_brie($item)
+      && !is_backstage_pass($item) )
+    {
+        if ( $item->{quality} > 0 ) {
+            if ( !is_hand_of_ragnaros($item) ) {
+                $item->{quality}--;
+            }
+        }
+    }
+    else {
+        if ( $item->{quality} < 50 ) {
+            $item->{quality}++;
+
+            if ( is_backstage_pass($item) )
+            {
+                if ( $item->{sell_in} < 11 ) {
+                    if ( $item->{quality} < 50 ) {
+                        $item->{quality}++;
+                    }
+                }
+
+                if ( $item->{sell_in} < 6 ) {
+                    if ( $item->{quality} < 50 ) {
+                        $item->{quality}++;
+                    }
+                }
+            }
+        }
+    }
 }
 
 1;

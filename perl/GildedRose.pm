@@ -23,6 +23,11 @@ sub is_backstage_pass {
   return $item->{name} eq 'Backstage passes to a TAFKAL80ETC concert';
 }
 
+sub is_hand_of_ragnaros {
+  my $item = shift;
+  return $item->{name} eq 'Sulfuras, Hand of Ragnaros';
+}
+
 sub update_quality {
     my $self = shift;
     for my $item ( $self->items()  ) {
@@ -30,7 +35,7 @@ sub update_quality {
           && !is_backstage_pass($item) )
         {
             if ( $item->{quality} > 0 ) {
-                if ( $item->{name} ne 'Sulfuras, Hand of Ragnaros' ) {
+                if ( !is_hand_of_ragnaros($item) ) {
                     $item->{quality} = $item->{quality} - 1;
                 }
             }
@@ -56,7 +61,7 @@ sub update_quality {
             }
         }
 
-        if ( $item->{name} ne 'Sulfuras, Hand of Ragnaros' ) {
+        if ( !is_hand_of_ragnaros($item) ) {
             $item->{sell_in} = $item->{sell_in} - 1;
         }
 
@@ -65,7 +70,7 @@ sub update_quality {
                 if ( !is_backstage_pass($item) )
                 {
                     if ( $item->{quality} > 0 ) {
-                        if ( $item->{name} ne 'Sulfuras, Hand of Ragnaros' ) {
+                        if ( !is_hand_of_ragnaros($item) ) {
                             $item->{quality} = $item->{quality} - 1;
                         }
                     }

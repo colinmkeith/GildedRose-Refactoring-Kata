@@ -28,6 +28,12 @@ sub is_hand_of_ragnaros {
   return $item->{name} eq 'Sulfuras, Hand of Ragnaros';
 }
 
+sub item_degrades_over_time {
+    my $item = shift;
+    is_hand_of_ragnaros($item) && return;
+    $item->{quality} > 0 && $item->{quality}--;
+}
+
 sub update_quality {
     my $self = shift;
     for my $item ( $self->items() ) {
@@ -66,11 +72,7 @@ sub update_item_quality {
     if ( !is_aged_brie($item)
       && !is_backstage_pass($item) )
     {
-        if ( $item->{quality} > 0 ) {
-            if ( !is_hand_of_ragnaros($item) ) {
-                $item->{quality}--;
-            }
-        }
+       item_degrades_over_time($item);
     }
     else {
         if ( $item->{quality} < 50 ) {

@@ -13,10 +13,15 @@ sub items {
   return @{ $self->{items} };
 }
 
+sub is_aged_brie {
+  my $item = shift;
+  return $item->{name} eq 'Aged Brie';
+}
+
 sub update_quality {
     my $self = shift;
     for my $item ( $self->items()  ) {
-        if (   $item->{name} ne 'Aged Brie'
+        if ( !is_aged_brie($item)
             && $item->{name} ne 'Backstage passes to a TAFKAL80ETC concert' )
         {
             if ( $item->{quality} > 0 ) {
@@ -52,7 +57,7 @@ sub update_quality {
         }
 
         if ( $item->{sell_in} < 0 ) {
-            if ( $item->{name} ne 'Aged Brie' ) {
+            if ( !is_aged_brie($item) ) {
                 if ( $item->{name} ne
                     'Backstage passes to a TAFKAL80ETC concert' )
                 {

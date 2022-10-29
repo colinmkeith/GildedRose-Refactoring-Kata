@@ -197,8 +197,6 @@ subtest 'Degradation Tests for special cases: Backstage Passes' => sub {
     $sell_in     = $app->items(BACKSTAGE_PASS)->sell_in;
     $expected_quality = $quality + 10 + (2 * 5) + 3;
     is($res_quality, $expected_quality, 'quality for '.  BACKSTAGE_PASS ." increased by 10 + (2 * 5) + 3 = +23 = $expected_quality with $sell_in days left");
-diag($app->items(BACKSTAGE_PASS)->sell_in);
-
 
     # Skip forward 3 days
     for (0..2) {

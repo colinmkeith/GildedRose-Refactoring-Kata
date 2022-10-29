@@ -45,7 +45,7 @@ sub update_quality {
                     }
                 }
                 else {
-                    $item->{quality}--;
+                    $item->{quality} = 0;
                 }
             }
             else {

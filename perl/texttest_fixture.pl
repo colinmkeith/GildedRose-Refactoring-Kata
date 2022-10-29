@@ -65,7 +65,7 @@ my $gilded_rose = GildedRose->new( items => $items );
 for my $day ( 0 .. $days ) {
     print "-------- day $day --------", "\n";
     print 'name, sellIn, quality',      "\n";
-    for my $item ( @{$items} ) {
+    for my $item ( $gilded_rose->items ) {
         print $item->to_string(), "\n";
     }
     print "\n";

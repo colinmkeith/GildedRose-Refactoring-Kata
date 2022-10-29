@@ -20,7 +20,7 @@ sub initGR {
           name    => $_,
           sell_in => $sell_in_days,
           quality => $quality)
-        } ( DEX_VEST, AGED_BRIE, SULFURAS, BACKSTAGE_PASS ) ];
+        } ( DEX_VEST, AGED_BRIE, SULFURAS, BACKSTAGE_PASS, MANA_CAKE ) ];
     return GildedRose->new( items => $items );
 }
 
@@ -221,6 +221,27 @@ subtest 'Degradation Tests for special cases: Backstage Passes' => sub {
     $sell_in     = $app->items(BACKSTAGE_PASS)->sell_in;
     $expected_quality = 0;
     is($res_quality, $expected_quality, 'quality for '.  BACKSTAGE_PASS .' is 0 as concert was last night');
+};
+
+=pod
+"Conjured" items degrade in Quality twice as fast as normal items
+=cut
+subtest 'Degradation Tests for special cases: Conjured' => sub {
+    my $sell_in_days = 20;
+    my $quality      = 10;
+    my $app          = initGR($sell_in_days, $quality);
+
+    my($res_quality, $expected_quality, $sell_in);
+
+    $app->update_quality();
+    $res_quality = $app->items(MANA_CAKE)->quality;
+    $expected_quality = $quality-2;
+    is($res_quality, $expected_quality, 'quality for '.  MANA_CAKE .' decreased by 2 after 1 day');
+
+    $app->update_quality();
+    $res_quality = $app->items(MANA_CAKE)->quality;
+    $expected_quality = $quality-4;
+    is($res_quality, $expected_quality, 'quality for '.  MANA_CAKE .' decreased by 4 after 2 days');
 };
 
 done_testing();

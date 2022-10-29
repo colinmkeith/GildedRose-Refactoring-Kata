@@ -87,8 +87,8 @@ subtest 'Degradation Tests for normal item' => sub {
 
     $app->update_quality();
     $app->update_quality();
-    $res_quality = [ $app->items ]->[0]->quality;
-    $res_sell_by = [ $app->items ]->[0]->sell_in;
+    $res_quality = $app->items(DEX_VEST)->quality;
+    $res_sell_by = $app->items(DEX_VEST)->sell_in;
     $expected_quality = $quality - $sell_in_days;
     $expected_sell_by = $sell_in_days - 2;
     is($res_quality, $expected_quality, "quality decreased correctly on sell by date (Quality = $expected_quality)" );
@@ -96,15 +96,15 @@ subtest 'Degradation Tests for normal item' => sub {
 
     # I understand "sell by date has passed" to be sell by < 0
     $app->update_quality();
-    $res_quality = [ $app->items ]->[0]->quality;
-    $res_sell_by = [ $app->items ]->[0]->sell_in;
+    $res_quality = $app->items(DEX_VEST)->quality;
+    $res_sell_by = $app->items(DEX_VEST)->sell_in;
     $expected_quality = $quality - $sell_in_days - 2;
     $expected_sell_by = $sell_in_days - 3;
     is($res_quality, $expected_quality, "quality decreased by double correctly 1 day after sell by date (Quality = $expected_quality)" );
     is($res_sell_by, $expected_sell_by, 'sell_by decreased correctly to < 0');
 
     $app->update_quality();
-    $res_quality = [ $app->items ]->[0]->quality;
+    $res_quality = $app->items(DEX_VEST)->quality;
     $expected_quality = $quality - $sell_in_days - 4;
     is($res_quality, $expected_quality, "quality decreased by double correctly 2 days after sell by date (Quality = $expected_quality)" );
 };

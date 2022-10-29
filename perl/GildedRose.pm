@@ -10,7 +10,12 @@ sub new {
 }
 
 sub items {
-  my $self = shift;
+  my($self, $by_name) = @_;
+
+  if($by_name) {
+    return (grep { $_->{name} eq $by_name } @{ $self->{items} })[0];
+  }
+
   return @{ $self->{items} };
 }
 

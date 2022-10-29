@@ -23,6 +23,7 @@ sub item_degrades_over_time {
     my $item = shift;
     $item->is_hand_of_ragnaros && return;
     $item->quality > 0 && $item->{quality}--;
+    $item->is_conjured && $item->quality > 0 && $item->{quality}--;
 }
 
 sub update_quality {

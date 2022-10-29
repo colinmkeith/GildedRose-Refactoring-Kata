@@ -39,6 +39,11 @@ sub is_hand_of_ragnaros {
   return $self->name eq SULFURAS;
 }
 
+sub is_conjured {
+  my $self = shift;
+  return $self->name =~ m/^Conjured /;
+}
+
 sub name {
   my $self = shift;
   return $self->{name};

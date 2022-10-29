@@ -15,11 +15,12 @@ use GildedRose::Constants qw(:all);
 sub initGR {
     my($sell_in_days, $quality) = @_;
     my $items = [
-      GildedRose::Item->new( name => DEX_VEST,       sell_in => $sell_in_days, quality => $quality ),
-      GildedRose::Item->new( name => AGED_BRIE,      sell_in => $sell_in_days, quality => $quality ),
-      GildedRose::Item->new( name => SULFURAS,       sell_in => $sell_in_days, quality => $quality ),
-      GildedRose::Item->new( name => BACKSTAGE_PASS, sell_in => $sell_in_days, quality => $quality ),
-    ];
+      map {
+        GildedRose::Item->new(
+          name    => $_,
+          sell_in => $sell_in_days,
+          quality => $quality)
+        } ( DEX_VEST, AGED_BRIE, SULFURAS, BACKSTAGE_PASS ) ];
     return GildedRose->new( items => $items );
 }
 

@@ -109,4 +109,28 @@ subtest 'Degradation Tests for normal item' => sub {
     is($res_quality, $expected_quality, "quality decreased by double correctly 2 days after sell by date (Quality = $expected_quality)" );
 };
 
+=pod
+  - "Sulfuras", being a legendary item, never has to be sold or decreases in Quality
+=cut
+subtest 'Degradation Tests for special cases: Sulfuras' => sub {
+    my $sell_in_days = 2;
+    my $quality      = 20;
+    my $app          = initGR($sell_in_days, $quality);
+
+    my $res_quality;
+    my $expected_quality;
+
+    $app->update_quality();
+    $res_quality = $app->items(SULFURAS)->quality;
+    is($res_quality, $quality, 'quality for sulfuras did not change after 1 day');
+
+    # I understand "sell by date has passed" to be sell by < 0
+    $app->update_quality();
+    $app->update_quality();
+    $app->update_quality();
+    $app->update_quality();
+    $res_quality = $app->items(SULFURAS)->quality;
+    is($res_quality, $quality, 'quality for sulfuras did not change after sell by date');
+};
+
 done_testing();

@@ -59,15 +59,13 @@ subtest 'Degradation Tests' => sub {
 subtest 'Boundary Tests' => sub {
     my $sell_in_days = 2;
     my $quality      = 1;
-    my $items = [ GildedRose::Item->new( name => DEX_VEST,  sell_in => $sell_in_days, quality => $quality ) ];
-    my $app = GildedRose->new( items => $items );
+    my $app          = initGR($sell_in_days, $quality);
     $app->update_quality();
 
     my $item = [ $app->items() ]->[0];
     cmp_ok($item->quality, '>=', 0, "Quality lower bounds: Does not go below 0" );
 
-    $items = [ GildedRose::Item->new( name => DEX_VEST,  sell_in => $sell_in_days, quality => 60 ) ];
-    $app = GildedRose->new( items => $items );
+    my $app          = initGR($sell_in_days, $quality);
     $app->update_quality();
 
     my $item2 = [ $app->items() ]->[0];

@@ -5,51 +5,52 @@ use warnings;
 
 use GildedRose;
 use Item;
+use GildedRose::Constants qw(:all);
 
 print 'OMGHAI!', "\n";
 my $items = [
     Item->new(
-        name    => '+5 Dexterity Vest',
+        name    => +DEX_VEST,
         sell_in => 10,
         quality => 20
     ),
     Item->new(
-        name    => 'Aged Brie',
+        name    => AGED_BRIE,
         sell_in => 2,
         quality => 0
     ),
     Item->new(
-        name    => 'Elixir of the Mongoose',
+        name    => MONGOOSE_ELIXIR,
         sell_in => 5,
         quality => 7
     ),
     Item->new(
-        name    => 'Sulfuras, Hand of Ragnaros',
+        name    => HAND_RAGNAROS,
         sell_in => 0,
         quality => 80
     ),
     Item->new(
-        name    => 'Sulfuras, Hand of Ragnaros',
+        name    => HAND_RAGNAROS,
         sell_in => -1,
         quality => 80
     ),
     Item->new(
-        name    => 'Backstage passes to a TAFKAL80ETC concert',
+        name    => BACKSTAGE_PASS,
         sell_in => 15,
         quality => 20
     ),
     Item->new(
-        name    => 'Backstage passes to a TAFKAL80ETC concert',
+        name    => BACKSTAGE_PASS,
         sell_in => 10,
         quality => 49
     ),
     Item->new(
-        name    => 'Backstage passes to a TAFKAL80ETC concert',
+        name    => BACKSTAGE_PASS,
         sell_in => 5,
         quality => 49
     ),
     Item->new(    # This Conjured item does not work properly yet
-        name    => 'Conjured Mana Cake',
+        name    => MANA_CAKE,
         sell_in => 3,
         quality => 6
     ),

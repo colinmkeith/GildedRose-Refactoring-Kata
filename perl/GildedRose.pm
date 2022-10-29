@@ -2,6 +2,7 @@ package GildedRose;
 
 use strict;
 use warnings;
+use GildedRose::Constants qw(:all);
 
 sub new {
     my ( $class, %attrs ) = @_;

@@ -153,10 +153,9 @@ subtest 'Degradation Tests for special cases: Aged Brie' => sub {
     $expected_quality = $quality + 1;
     is($res_quality, $expected_quality, 'quality for '.  AGED_BRIE .' increased after 1 day');
 
-    $app->update_quality();
-    $app->update_quality();
-    $app->update_quality();
-    $app->update_quality();
+    for (0..3) {
+      $app->update_quality();
+    }
     $res_quality = $app->items(SULFURAS)->quality;
     $expected_quality = $quality + 5;
     is($res_quality, $quality, 'quality for '.  AGED_BRIE .' continued to increase after sell by date');
@@ -169,24 +168,54 @@ subtest 'Degradation Tests for special cases: Aged Brie' => sub {
 =cut
 subtest 'Degradation Tests for special cases: Backstage Passes' => sub {
     my $sell_in_days = 20;
-    my $quality      = 20;
+    my $quality      = 10;
     my $app          = initGR($sell_in_days, $quality);
 
-    my $res_quality;
-    my $expected_quality;
+    my($res_quality, $expected_quality, $sell_in);
 
-    $app->update_quality();
+    $app->update_quality(); # 19 days
     $res_quality = $app->items(BACKSTAGE_PASS)->quality;
     $expected_quality = $quality + 1;
-    is($res_quality, $expected_quality, 'quality for '.  BACKSTAGE_PASS .' increased after 1 day');
+    is($res_quality, $expected_quality, 'quality for '.  BACKSTAGE_PASS .' increased by 1 after 1 day');
 
+    # Skip forward 10 days
+    for (0..9) {
+      $app->update_quality();
+    }
+
+    $res_quality = $app->items(BACKSTAGE_PASS)->quality;
+    $sell_in     = $app->items(BACKSTAGE_PASS)->sell_in;
+    $expected_quality = $quality + 10 + 2;
+    is($res_quality, $expected_quality, 'quality for '.  BACKSTAGE_PASS ." increased by 10 + 2 = +12 = $expected_quality with $sell_in days left");
+
+    # Skip forward 5 days
+    for (0..4) {
+      $app->update_quality();
+    }
+
+    $res_quality = $app->items(BACKSTAGE_PASS)->quality;
+    $sell_in     = $app->items(BACKSTAGE_PASS)->sell_in;
+    $expected_quality = $quality + 10 + (2 * 5) + 3;
+    is($res_quality, $expected_quality, 'quality for '.  BACKSTAGE_PASS ." increased by 10 + (2 * 5) + 3 = +23 = $expected_quality with $sell_in days left");
+diag($app->items(BACKSTAGE_PASS)->sell_in);
+
+
+    # Skip forward 3 days
+    for (0..2) {
+      $app->update_quality();
+    }
+
+    $res_quality = $app->items(BACKSTAGE_PASS)->quality;
+    $sell_in     = $app->items(BACKSTAGE_PASS)->sell_in;
+    $expected_quality = $quality + 10 + (2 * 5) + (3 * 4);
+    is($res_quality, $expected_quality, 'quality for '.  BACKSTAGE_PASS ." increased by 10 + (2 * 5) + (3 * 4)= +32 = $expected_quality with $sell_in days left");
+
+    diag('I understand sell_in == 0 to mean the concert is today, so still has value.');
     $app->update_quality();
-    $app->update_quality();
-    $app->update_quality();
-    $app->update_quality();
-    $res_quality = $app->items(SULFURAS)->quality;
-    $expected_quality = $quality + 5;
-    is($res_quality, $quality, 'quality for aged brie continued to increase after sell by date');
+    $res_quality = $app->items(BACKSTAGE_PASS)->quality;
+    $sell_in     = $app->items(BACKSTAGE_PASS)->sell_in;
+    $expected_quality = $quality + 10 + (2 * 5) + (3 * 5);
+    is($res_quality, $expected_quality, 'quality for '.  BACKSTAGE_PASS ." increased by 10 + (2 * 5) + (3 * 5)= +32 = $expected_quality with $sell_in days left");
 };
 
 done_testing();

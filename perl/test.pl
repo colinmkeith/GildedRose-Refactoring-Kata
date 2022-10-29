@@ -15,7 +15,7 @@ subtest 'foo' => sub {
     is( [ $app->items() ]->[0]->{name}, 'foo' );
 };
 
-subtest 'Basic Tests' => sub {
+subtest 'Degradation Tests' => sub {
     my $sell_in_days = 2;
     my $quality      = 2;
     my $items = [ GildedRose::Item->new( name => 'foo', sell_in => $sell_in_days, quality => $quality ) ];
@@ -28,6 +28,19 @@ subtest 'Basic Tests' => sub {
       is($check_item->quality, $quality - $day,      "Item ${name} quality decreased as 1 for $day day(s)" );
       $app->update_quality();
     }
+};
+
+subtest 'Limit Tests' => sub {
+    my $sell_in_days = 2;
+    my $quality      = 1;
+    my $items = [ GildedRose::Item->new( name => 'foo', sell_in => $sell_in_days, quality => $quality ) ];
+    my $app = GildedRose->new( items => $items );
+    my $check_item = [ $app->items() ]->[0];
+    my $name = $check_item->{name};
+    $app->update_quality();
+    $app->update_quality();
+
+    is($check_item->quality, 0, "Item ${name} quality does not go below 0" );
 };
 
 done_testing();

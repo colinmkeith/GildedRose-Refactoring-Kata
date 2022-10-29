@@ -23,7 +23,7 @@ subtest 'Instantiation Tests' => sub {
 
 =pod
  - At the end of each day our system lowers both values for every item
-=end
+=cut
 subtest 'Degradation Tests' => sub {
     my $sell_in_days = 2;
     my $quality      = 2;
@@ -44,7 +44,7 @@ subtest 'Degradation Tests' => sub {
 =pod
  - The Quality of an item is never negative
  - The Quality of an item is never more than 50
-=end
+=cut
 subtest 'Boundary Tests' => sub {
     my $sell_in_days = 2;
     my $quality      = 1;

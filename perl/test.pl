@@ -118,7 +118,6 @@ subtest 'Degradation Tests for special cases: Sulfuras' => sub {
     my $app          = initGR($sell_in_days, $quality);
 
     my $res_quality;
-    my $expected_quality;
 
     $app->update_quality();
     $res_quality = $app->items(SULFURAS)->quality;
@@ -131,6 +130,31 @@ subtest 'Degradation Tests for special cases: Sulfuras' => sub {
     $app->update_quality();
     $res_quality = $app->items(SULFURAS)->quality;
     is($res_quality, $quality, 'quality for sulfuras did not change after sell by date');
+};
+
+=pod
+  - "Aged Brie" actually increases in Quality the older it gets
+=cut
+subtest 'Degradation Tests for special cases: Aged Brie' => sub {
+    my $sell_in_days = 2;
+    my $quality      = 20;
+    my $app          = initGR($sell_in_days, $quality);
+
+    my $res_quality;
+    my $expected_quality;
+
+    $app->update_quality();
+    $res_quality = $app->items(AGED_BRIE)->quality;
+    $expected_quality = $quality + 1;
+    is($res_quality, $expected_quality, 'quality for aged brie increased after 1 day');
+
+    $app->update_quality();
+    $app->update_quality();
+    $app->update_quality();
+    $app->update_quality();
+    $res_quality = $app->items(SULFURAS)->quality;
+    $expected_quality = $quality + 5;
+    is($res_quality, $quality, 'quality for aged brie continued to increase after sell by date');
 };
 
 done_testing();

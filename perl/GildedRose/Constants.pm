@@ -6,7 +6,7 @@ our @EXPORT = ();
 
 our %EXPORT_TAGS = (
     'all' => [ qw( DEX_VEST AGED_BRIE MONGOOSE_ELIXIR
-                   HAND_RAGNAROS BACKSTAGE_PASS MANA_CAKE) ],
+                   SULFURAS BACKSTAGE_PASS MANA_CAKE) ],
 );
 
 our @EXPORT_OK = (
@@ -17,7 +17,7 @@ use constant {
   DEX_VEST        => '+5 Dexterity Vest',
   AGED_BRIE       => 'Aged Brie',
   MONGOOSE_ELIXIR => 'Elixir of the Mongoose',
-  HAND_RAGNAROS   => 'Sulfuras, Hand of Ragnaros',
+  SULFURAS   => 'Sulfuras, Hand of Ragnaros',
   BACKSTAGE_PASS  => 'Backstage passes to a TAFKAL80ETC concert',
   MANA_CAKE       => 'Conjured Mana Cake',
 };

@@ -36,7 +36,7 @@ sub is_backstage_pass {
 
 sub is_hand_of_ragnaros {
   my $self = shift;
-  return $self->name eq HAND_RAGNAROS;
+  return $self->name eq SULFURAS;
 }
 
 sub name {

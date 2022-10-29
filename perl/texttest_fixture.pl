@@ -25,12 +25,12 @@ my $items = [
         quality => 7
     ),
     GildedRose::Item->new(
-        name    => HAND_RAGNAROS,
+        name    => SULFURAS,
         sell_in => 0,
         quality => 80
     ),
     GildedRose::Item->new(
-        name    => HAND_RAGNAROS,
+        name    => SULFURAS,
         sell_in => -1,
         quality => 80
     ),

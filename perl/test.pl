@@ -216,6 +216,13 @@ diag($app->items(BACKSTAGE_PASS)->sell_in);
     $sell_in     = $app->items(BACKSTAGE_PASS)->sell_in;
     $expected_quality = $quality + 10 + (2 * 5) + (3 * 5);
     is($res_quality, $expected_quality, 'quality for '.  BACKSTAGE_PASS ." increased by 10 + (2 * 5) + (3 * 5)= +32 = $expected_quality with $sell_in days left");
+
+    diag('Day after the concert');
+    $app->update_quality();
+    $res_quality = $app->items(BACKSTAGE_PASS)->quality;
+    $sell_in     = $app->items(BACKSTAGE_PASS)->sell_in;
+    $expected_quality = 0;
+    is($res_quality, $expected_quality, 'quality for '.  BACKSTAGE_PASS .' is 0 as concert was last night');
 };
 
 done_testing();

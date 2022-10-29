@@ -1,9 +1,28 @@
 package GildedRose::Item;
 
-use parent 'Item';
 use strict;
 use warnings;
+
+use parent 'Item';
 use GildedRose::Constants qw(:all);
+
+sub new {
+    my ( $class, %attrs ) = @_;
+    if( exists($attrs{quality}) ) {
+      # - The Quality of an item is never more than 50
+      if( $attrs{quality} > 50 ) {
+        $attrs{quality} = 50;
+      }
+
+      # - The Quality of an item is never negative
+      elsif( $attrs{quality} < 0 ) {
+        $attrs{quality} = 0;
+      }
+    }
+
+    my $self = $class->SUPER::new(%attrs);
+    return bless $self, $class;
+}
 
 sub is_aged_brie {
   my $self = shift;

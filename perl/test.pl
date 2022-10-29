@@ -15,9 +15,10 @@ use GildedRose::Constants qw(:all);
 sub initGR {
     my($sell_in_days, $quality) = @_;
     my $items = [
-      GildedRose::Item->new( name => DEX_VEST, sell_in => $sell_in_days, quality => $quality ),
-      GildedRose::Item->new( name => AGED_BRIE, sell_in => $sell_in_days, quality => $quality ),
-      GildedRose::Item->new( name => SULFURAS, sell_in => $sell_in_days, quality => $quality ),
+      GildedRose::Item->new( name => DEX_VEST,       sell_in => $sell_in_days, quality => $quality ),
+      GildedRose::Item->new( name => AGED_BRIE,      sell_in => $sell_in_days, quality => $quality ),
+      GildedRose::Item->new( name => SULFURAS,       sell_in => $sell_in_days, quality => $quality ),
+      GildedRose::Item->new( name => BACKSTAGE_PASS, sell_in => $sell_in_days, quality => $quality ),
     ];
     return GildedRose->new( items => $items );
 }
@@ -121,7 +122,7 @@ subtest 'Degradation Tests for special cases: Sulfuras' => sub {
 
     $app->update_quality();
     $res_quality = $app->items(SULFURAS)->quality;
-    is($res_quality, $quality, 'quality for sulfuras did not change after 1 day');
+    is($res_quality, $quality, 'quality for '.  SULFURAS .' did not change after 1 day');
 
     # I understand "sell by date has passed" to be sell by < 0
     $app->update_quality();
@@ -129,11 +130,14 @@ subtest 'Degradation Tests for special cases: Sulfuras' => sub {
     $app->update_quality();
     $app->update_quality();
     $res_quality = $app->items(SULFURAS)->quality;
-    is($res_quality, $quality, 'quality for sulfuras did not change after sell by date');
+    is($res_quality, $quality, 'quality for '.  SULFURAS .' did not change after sell by date');
 };
 
 =pod
   - "Aged Brie" actually increases in Quality the older it gets
+  - "Backstage passes", like aged brie, increases in Quality as its SellIn value approaches;
+  Quality increases by 2 when there are 10 days or less and by 3 when there are 5 days or less but
+  Quality drops to 0 after the concert
 =cut
 subtest 'Degradation Tests for special cases: Aged Brie' => sub {
     my $sell_in_days = 2;
@@ -146,7 +150,34 @@ subtest 'Degradation Tests for special cases: Aged Brie' => sub {
     $app->update_quality();
     $res_quality = $app->items(AGED_BRIE)->quality;
     $expected_quality = $quality + 1;
-    is($res_quality, $expected_quality, 'quality for aged brie increased after 1 day');
+    is($res_quality, $expected_quality, 'quality for '.  AGED_BRIE .' increased after 1 day');
+
+    $app->update_quality();
+    $app->update_quality();
+    $app->update_quality();
+    $app->update_quality();
+    $res_quality = $app->items(SULFURAS)->quality;
+    $expected_quality = $quality + 5;
+    is($res_quality, $quality, 'quality for '.  AGED_BRIE .' continued to increase after sell by date');
+};
+
+=pod
+  - "Backstage passes", like aged brie, increases in Quality as its SellIn value approaches;
+  Quality increases by 2 when there are 10 days or less and by 3 when there are 5 days or less but
+  Quality drops to 0 after the concert
+=cut
+subtest 'Degradation Tests for special cases: Backstage Passes' => sub {
+    my $sell_in_days = 20;
+    my $quality      = 20;
+    my $app          = initGR($sell_in_days, $quality);
+
+    my $res_quality;
+    my $expected_quality;
+
+    $app->update_quality();
+    $res_quality = $app->items(BACKSTAGE_PASS)->quality;
+    $expected_quality = $quality + 1;
+    is($res_quality, $expected_quality, 'quality for '.  BACKSTAGE_PASS .' increased after 1 day');
 
     $app->update_quality();
     $app->update_quality();

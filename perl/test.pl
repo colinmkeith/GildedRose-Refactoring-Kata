@@ -33,14 +33,20 @@ subtest 'Degradation Tests' => sub {
 subtest 'Limit Tests' => sub {
     my $sell_in_days = 2;
     my $quality      = 1;
-    my $items = [ GildedRose::Item->new( name => 'foo', sell_in => $sell_in_days, quality => $quality ) ];
+    my $items = [ GildedRose::Item->new( name => 'foo',  sell_in => $sell_in_days, quality => $quality ) ];
     my $app = GildedRose->new( items => $items );
     my $check_item = [ $app->items() ]->[0];
     my $name = $check_item->{name};
     $app->update_quality();
     $app->update_quality();
 
-    is($check_item->quality, 0, "Item ${name} quality does not go below 0" );
+    cmp_ok($check_item->quality, '>=', 0, "Quality lower bounds: Does not go below 0" );
+    my $items = [ GildedRose::Item->new( name => 'foo',  sell_in => $sell_in_days, quality => 60 ) ];
+    $app = GildedRose->new( items => $items );
+    $app->update_quality();
+    my $check_item2 = [ $app->items() ]->[0];
+
+    cmp_ok($check_item2->quality, '<', 50, "Quality upper bounds: Does not go above 50" );
 };
 
 done_testing();

@@ -65,11 +65,48 @@ subtest 'Boundary Tests' => sub {
     my $item = [ $app->items() ]->[0];
     cmp_ok($item->quality, '>=', 0, "Quality lower bounds: Does not go below 0" );
 
-    my $app          = initGR($sell_in_days, $quality);
+    $app = initGR($sell_in_days, $quality);
     $app->update_quality();
 
     my $item2 = [ $app->items() ]->[0];
     cmp_ok($item2->quality, '<', 50, "Quality upper bounds: Does not go above 50" );
+};
+
+=pod
+  - Once the sell by date has passed, Quality degrades twice as fast
+=cut
+subtest 'Degradation Tests for normal item' => sub {
+    my $sell_in_days = 2;
+    my $quality      = 20;
+    my $app          = initGR($sell_in_days, $quality);
+
+    my $res_quality;
+    my $res_sell_by;
+    my $expected_quality;
+    my $expected_sell_by;
+
+    $app->update_quality();
+    $app->update_quality();
+    $res_quality = [ $app->items ]->[0]->quality;
+    $res_sell_by = [ $app->items ]->[0]->sell_in;
+    $expected_quality = $quality - $sell_in_days;
+    $expected_sell_by = $sell_in_days - 2;
+    is($res_quality, $expected_quality, "quality decreased correctly on sell by date (Quality = $expected_quality)" );
+    is($res_sell_by, $expected_sell_by, 'sell_by decreased correctly to 0');
+
+    # I understand "sell by date has passed" to be sell by < 0
+    $app->update_quality();
+    $res_quality = [ $app->items ]->[0]->quality;
+    $res_sell_by = [ $app->items ]->[0]->sell_in;
+    $expected_quality = $quality - $sell_in_days - 2;
+    $expected_sell_by = $sell_in_days - 3;
+    is($res_quality, $expected_quality, "quality decreased by double correctly 1 day after sell by date (Quality = $expected_quality)" );
+    is($res_sell_by, $expected_sell_by, 'sell_by decreased correctly to < 0');
+
+    $app->update_quality();
+    $res_quality = [ $app->items ]->[0]->quality;
+    $expected_quality = $quality - $sell_in_days - 4;
+    is($res_quality, $expected_quality, "quality decreased by double correctly 2 days after sell by date (Quality = $expected_quality)" );
 };
 
 done_testing();

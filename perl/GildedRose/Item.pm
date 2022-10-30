@@ -50,13 +50,35 @@ sub name {
 }
 
 sub quality {
-  my $self = shift;
+  my($self, $value) = @_;
+  if(defined($value)) {
+    if($value =~ m/^\+([0-9]+)$/) {
+      $value = $self->{quality} + $1;
+    }
+    elsif($value =~ m/^-([0-9]+)$/) {
+      $value = $self->{quality} - $1;
+    }
+
+    $self->{quality} = $value;
+  }
   return $self->{quality};
 }
 
 sub sell_in {
-  my $self = shift;
+  my($self, $value) = @_;
+  if(defined($value) ) {
+    if($value =~ m/^\+([0-9]+)$/) {
+      $value = $self->{sell_in} + $1;
+    }
+    elsif($value =~ m/^-([0-9]+)$/) {
+      $value = $self->{sell_in} - $1;
+    }
+
+    $self->{sell_in} = $value;
+  }
   return $self->{sell_in};
 }
+
+
 
 1;

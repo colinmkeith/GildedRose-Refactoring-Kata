@@ -244,4 +244,35 @@ subtest 'Degradation Tests for special cases: Conjured' => sub {
     is($res_quality, $expected_quality, 'quality for '.  MANA_CAKE .' decreased by 4 after 2 days');
 };
 
+subtest 'Code Change Check: quality / sell_in' => sub {
+    my $sell_in_days = 10;
+    my $quality      = 10;
+    my $app          = initGR($sell_in_days, $quality);
+    my $item         = $app->items(DEX_VEST);
+
+    $item->quality(20);
+    is($item->quality, 20, 'quality for '.  DEX_VEST .' set to 20');
+
+    $item->quality('+20');
+    is($item->quality, 40, 'quality for '.  DEX_VEST .' increased by 20 to 40');
+
+    $item->quality(-20);
+    is($item->quality, 20, 'quality for '.  DEX_VEST .' decreased by 20 back to 20');
+
+    $item->quality(0);
+    is($item->quality, 0, 'quality for '.  DEX_VEST .' set to 0');
+
+    $item->sell_in(20);
+    is($item->sell_in, 20, 'sell_in for '.  DEX_VEST .' set to 20');
+
+    $item->sell_in('+20');
+    is($item->sell_in, 40, 'sell_in for '.  DEX_VEST .' increased by 20 to 40');
+
+    $item->sell_in(-20);
+    is($item->sell_in, 20, 'sell_in for '.  DEX_VEST .' decreased by 20 back to 20');
+
+    $item->sell_in(0);
+    is($item->sell_in, 0, 'sell_in for '.  DEX_VEST .' set to 0');
+};
+
 done_testing();

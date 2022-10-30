@@ -30,33 +30,36 @@ sub update_quality {
     my $self = shift;
     for my $item ( $self->items() ) {
         update_item_quality($item);
+        update_item_sell_in($item);
+    }
+}
 
-        if ( !$item->is_hand_of_ragnaros ) {
-            $item->{sell_in}--;
-        }
+sub update_item_sell_in {
+    my $item = shift;
+    if ( !$item->is_hand_of_ragnaros ) {
+        $item->{sell_in}--;
+    }
 
-        if ( $item->sell_in < 0 ) {
-            if ( !$item->is_aged_brie ) {
-                if ( !$item->is_backstage_pass )
-                {
-                    if ( $item->quality > 0 ) {
-                        if ( !$item->is_hand_of_ragnaros ) {
-                            $item->{quality}--;
-                        }
+    if ( $item->sell_in < 0 ) {
+        if ( !$item->is_aged_brie ) {
+            if ( !$item->is_backstage_pass )
+            {
+                if ( $item->quality > 0 ) {
+                    if ( !$item->is_hand_of_ragnaros ) {
+                        $item->{quality}--;
                     }
-                }
-                else {
-                    $item->{quality} = 0;
                 }
             }
             else {
-                if ( $item->quality < 50 ) {
-                    $item->{quality}++;
-                }
+                $item->{quality} = 0;
+            }
+        }
+        else {
+            if ( $item->quality < 50 ) {
+                $item->{quality}++;
             }
         }
     }
-    return;
 }
 
 sub update_item_quality {

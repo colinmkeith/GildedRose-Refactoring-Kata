@@ -61,6 +61,11 @@ sub quality {
 
     $self->{quality} = $value;
   }
+
+  # Enforce quality limits
+  $self->{quality} > 50 && ($self->{quality} = 50);
+  $self->{quality} <  0 && ($self->{quality} = 0);
+
   return $self->{quality};
 }
 

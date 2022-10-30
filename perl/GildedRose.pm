@@ -22,8 +22,8 @@ sub items {
 sub item_degrades_over_time {
     my $item = shift;
     $item->is_hand_of_ragnaros && return;
-    $item->quality > 0 && $item->quality(-1);
-    $item->is_conjured && $item->quality > 0 && $item->quality(-1);
+    $item->quality(-1);
+    $item->is_conjured && $item->quality(-1);
 }
 
 sub update_quality {
@@ -44,10 +44,8 @@ sub update_item_sell_in {
         if ( !$item->is_aged_brie ) {
             if ( !$item->is_backstage_pass )
             {
-                if ( $item->quality > 0 ) {
-                    if ( !$item->is_hand_of_ragnaros ) {
-                        $item->quality(-1);
-                    }
+                if ( !$item->is_hand_of_ragnaros ) {
+                    $item->quality(-1);
                 }
             }
             else {
@@ -55,9 +53,7 @@ sub update_item_sell_in {
             }
         }
         else {
-            if ( $item->quality < 50 ) {
-                $item->quality('+1');
-            }
+            $item->quality('+1');
         }
     }
 }
@@ -70,22 +66,16 @@ sub update_item_quality {
        item_degrades_over_time($item);
     }
     else {
-        if ( $item->quality < 50 ) {
-            $item->quality('+1');
+        $item->quality('+1');
 
-            if ( $item->is_backstage_pass )
-            {
-                if ( $item->sell_in < 11 ) {
-                    if ( $item->quality < 50 ) {
-                        $item->quality('+1');
-                    }
-                }
+        if ( $item->is_backstage_pass )
+        {
+            if ( $item->sell_in < 11 ) {
+                $item->quality('+1');
+            }
 
-                if ( $item->sell_in < 6 ) {
-                    if ( $item->quality < 50 ) {
-                        $item->quality('+1');
-                    }
-                }
+            if ( $item->sell_in < 6 ) {
+                $item->quality('+1');
             }
         }
     }

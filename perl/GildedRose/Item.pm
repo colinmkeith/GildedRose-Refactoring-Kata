@@ -28,7 +28,7 @@ sub is_backstage_pass {
   return $self->name eq BACKSTAGE_PASS;
 }
 
-sub is_hand_of_ragnaros {
+sub is_sulfuras {
   my $self = shift;
   return $self->name eq SULFURAS;
 }
@@ -50,7 +50,7 @@ sub quality {
       $value = $self->{quality} + $1;
     }
     elsif($value =~ m/^-([0-9]+)$/) {
-      $self->is_hand_of_ragnaros && return;
+      $self->is_sulfuras && return;
       $value = $self->{quality} - $1;
     }
 
@@ -67,7 +67,7 @@ sub quality {
 sub sell_in {
   my($self, $value) = @_;
   if(defined($value) ) {
-    $self->is_hand_of_ragnaros && defined($self->sell_in) && return;
+    $self->is_sulfuras && defined($self->sell_in) && return;
 
     if($value =~ m/^\+([0-9]+)$/) {
       $value = $self->{sell_in} + $1;

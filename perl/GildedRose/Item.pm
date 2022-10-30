@@ -28,11 +28,6 @@ sub is_backstage_pass {
   return $self->name eq BACKSTAGE_PASS;
 }
 
-sub is_sulfuras {
-  my $self = shift;
-  return $self->name eq SULFURAS;
-}
-
 sub is_conjured {
   my $self = shift;
   return $self->name =~ m/^Conjured /;

@@ -71,7 +71,6 @@ sub update_item_quality {
        }
     }
     else {
-        $item->is_hand_of_ragnaros && return;
         $item->quality(-1);
         $item->is_conjured && $item->quality(-1);
     }

@@ -50,6 +50,7 @@ sub quality {
       $value = $self->{quality} + $1;
     }
     elsif($value =~ m/^-([0-9]+)$/) {
+      $self->is_hand_of_ragnaros && return;
       $value = $self->{quality} - $1;
     }
 
@@ -76,6 +77,7 @@ sub sell_in {
     }
 
     $self->{sell_in} = $value;
+
   }
   return $self->{sell_in};
 }

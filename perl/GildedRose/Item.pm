@@ -66,6 +66,8 @@ sub quality {
 sub sell_in {
   my($self, $value) = @_;
   if(defined($value) ) {
+    $self->is_hand_of_ragnaros && defined($self->sell_in) && return;
+
     if($value =~ m/^\+([0-9]+)$/) {
       $value = $self->{sell_in} + $1;
     }

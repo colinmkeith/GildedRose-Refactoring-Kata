@@ -36,9 +36,7 @@ sub update_quality {
 
 sub update_item_sell_in {
     my $item = shift;
-    if ( !$item->is_hand_of_ragnaros ) {
-        $item->sell_in(-1);
-    }
+    $item->sell_in(-1);
 
     if ( $item->sell_in < 0 ) {
         if ( !$item->is_aged_brie ) {

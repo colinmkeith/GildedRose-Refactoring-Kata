@@ -57,12 +57,16 @@ sub update_item_quality {
     }
     elsif ( $item->is_backstage_pass )
     {
-       $item->quality('+1');
-       if ( $item->sell_in < 11 ) {
-           $item->quality('+1');
+       if ( $item->sell_in < 0 ) {
+           $item->quality(0);
        }
-
-       if ( $item->sell_in < 6 ) {
+       elsif ( $item->sell_in < 6 ) {
+           $item->quality('+3');
+       }
+       elsif ( $item->sell_in < 11 ) {
+           $item->quality('+2');
+       }
+       else {
            $item->quality('+1');
        }
     }

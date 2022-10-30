@@ -6,7 +6,6 @@ use warnings;
 use Test::More 0.96;
 
 use_ok 'GildedRose';
-use_ok 'GildedRose::Item';
 use_ok 'GildedRose::Constants';
 
 # Need to do this to trigger constants import
@@ -16,11 +15,13 @@ sub initGR {
     my($sell_in_days, $quality) = @_;
     my $items = [
       map {
-        GildedRose::Item->new(
+        {
           name    => $_,
           sell_in => $sell_in_days,
-          quality => $quality)
-        } ( DEX_VEST, AGED_BRIE, SULFURAS, BACKSTAGE_PASS, MANA_CAKE ) ];
+          quality => $quality
+        }
+      } ( DEX_VEST, AGED_BRIE, SULFURAS, BACKSTAGE_PASS, MANA_CAKE )
+    ];
     return GildedRose->new( items => $items );
 }
 
@@ -28,7 +29,7 @@ subtest 'Instantiation Tests' => sub {
     my $sell_in_days = 2;
     my $quality      = 2;
     my $app          = initGR($sell_in_days, $quality);
-    my $item         = [ $app->items() ]->[0];
+    my $item         = $app->items(DEX_VEST);
 
     is($item->name,    DEX_VEST,      'Item name correct');
     is($item->quality, $quality,      'Item quality correct');
@@ -73,18 +74,24 @@ subtest 'Boundary Tests' => sub {
     my $item2 = [ $app->items() ]->[0];
     cmp_ok($item2->quality, '<', 50, "Quality upper bounds: Does not go above 50" );
 
-    my $item_lower = GildedRose::Item->new(
+    my $item_lower = GildedRose->new(items => [
+      {
         name    => DEX_VEST,
         sell_in => 10,
-        quality => -1);
+        quality => -1
+      }
+    ]);
 
-    my $item_upper = GildedRose::Item->new(
+    my $item_upper = GildedRose->new(items => [
+      {
         name    => DEX_VEST,
         sell_in => 10,
-        quality => 100);
+        quality => 100
+      }
+    ]);
 
-    is($item_lower->quality,  0, 'quality on set has correct lower limit of 0'  );
-    is($item_upper->quality, 50, 'quality on set has correct upper limit of 50' );
+    is($item_lower->items(DEX_VEST)->quality,  0, 'quality on set has correct lower limit of 0'  );
+    is($item_upper->items(DEX_VEST)->quality, 50, 'quality on set has correct upper limit of 50' );
 };
 
 =pod

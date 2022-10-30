@@ -72,6 +72,19 @@ subtest 'Boundary Tests' => sub {
 
     my $item2 = [ $app->items() ]->[0];
     cmp_ok($item2->quality, '<', 50, "Quality upper bounds: Does not go above 50" );
+
+    my $item_lower = GildedRose::Item->new(
+        name    => DEX_VEST,
+        sell_in => 10,
+        quality => -1);
+
+    my $item_upper = GildedRose::Item->new(
+        name    => DEX_VEST,
+        sell_in => 10,
+        quality => 100);
+
+    is($item_lower->quality,  0, 'quality on set has correct lower limit of 0'  );
+    is($item_upper->quality, 50, 'quality on set has correct upper limit of 50' );
 };
 
 =pod

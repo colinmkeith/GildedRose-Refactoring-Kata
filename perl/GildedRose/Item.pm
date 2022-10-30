@@ -8,20 +8,14 @@ use GildedRose::Constants qw(:all);
 
 sub new {
     my ( $class, %attrs ) = @_;
-    if( exists($attrs{quality}) ) {
-      # - The Quality of an item is never more than 50
-      if( $attrs{quality} > 50 ) {
-        $attrs{quality} = 50;
-      }
-
-      # - The Quality of an item is never negative
-      elsif( $attrs{quality} < 0 ) {
-        $attrs{quality} = 0;
-      }
-    }
+    my $quality = delete($attrs{quality});
+    my $sell_in = delete($attrs{sell_in});
 
     my $self = $class->SUPER::new(%attrs);
-    return bless $self, $class;
+    my $this = bless $self, $class;
+    defined($quality) && $this->quality($quality);
+    defined($sell_in) && $this->sell_in($sell_in);
+    return $this;
 }
 
 sub is_aged_brie {

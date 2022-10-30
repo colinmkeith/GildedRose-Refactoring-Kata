@@ -50,7 +50,6 @@ sub quality {
       $value = $self->{quality} + $1;
     }
     elsif($value =~ m/^-([0-9]+)$/) {
-      $self->is_sulfuras && return;
       $value = $self->{quality} - $1;
     }
 

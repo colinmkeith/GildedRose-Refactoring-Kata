@@ -19,13 +19,6 @@ sub items {
   return @{ $self->{items} };
 }
 
-sub item_degrades_over_time {
-    my $item = shift;
-    $item->is_hand_of_ragnaros && return;
-    $item->quality(-1);
-    $item->is_conjured && $item->quality(-1);
-}
-
 sub update_quality {
     my $self = shift;
     for my $item ( $self->items() ) {
@@ -58,24 +51,25 @@ sub update_item_sell_in {
 
 sub update_item_quality {
     my $item = shift;
-    if ( !$item->is_aged_brie
-      && !$item->is_backstage_pass )
+    if ( $item->is_aged_brie )
     {
-       item_degrades_over_time($item);
+        $item->quality('+1');
+    }
+    elsif ( $item->is_backstage_pass )
+    {
+       $item->quality('+1');
+       if ( $item->sell_in < 11 ) {
+           $item->quality('+1');
+       }
+
+       if ( $item->sell_in < 6 ) {
+           $item->quality('+1');
+       }
     }
     else {
-        $item->quality('+1');
-
-        if ( $item->is_backstage_pass )
-        {
-            if ( $item->sell_in < 11 ) {
-                $item->quality('+1');
-            }
-
-            if ( $item->sell_in < 6 ) {
-                $item->quality('+1');
-            }
-        }
+        $item->is_hand_of_ragnaros && return;
+        $item->quality(-1);
+        $item->is_conjured && $item->quality(-1);
     }
 }
 

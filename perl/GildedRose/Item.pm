@@ -75,6 +75,31 @@ sub sell_in {
   return $self->{sell_in};
 }
 
-
+sub age {
+    my $self = shift;
+    if ( $self->is_aged_brie )
+    {
+        $self->quality('+1');
+    }
+    elsif ( $self->is_backstage_pass )
+    {
+       if ( $self->sell_in < 0 ) {
+           $self->quality(0);
+       }
+       elsif ( $self->sell_in < 6 ) {
+           $self->quality('+3');
+       }
+       elsif ( $self->sell_in < 11 ) {
+           $self->quality('+2');
+       }
+       else {
+           $self->quality('+1');
+       }
+    }
+    else {
+        $self->quality(-1);
+        $self->is_conjured && $self->quality(-1);
+    }
+}
 
 1;

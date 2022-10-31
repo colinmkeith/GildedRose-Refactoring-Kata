@@ -44,7 +44,7 @@ sub items {
 sub update_quality {
     my $self = shift;
     for my $item ( $self->items() ) {
-        update_item_quality($item);
+        $item->age;
         update_item_sell_in($item);
     }
 }
@@ -64,33 +64,6 @@ sub update_item_sell_in {
         else {
             $item->quality(-1);
         }
-    }
-}
-
-sub update_item_quality {
-    my $item = shift;
-    if ( $item->is_aged_brie )
-    {
-        $item->quality('+1');
-    }
-    elsif ( $item->is_backstage_pass )
-    {
-       if ( $item->sell_in < 0 ) {
-           $item->quality(0);
-       }
-       elsif ( $item->sell_in < 6 ) {
-           $item->quality('+3');
-       }
-       elsif ( $item->sell_in < 11 ) {
-           $item->quality('+2');
-       }
-       else {
-           $item->quality('+1');
-       }
-    }
-    else {
-        $item->quality(-1);
-        $item->is_conjured && $item->quality(-1);
     }
 }
 

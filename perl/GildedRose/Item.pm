@@ -100,6 +100,21 @@ sub age {
         $self->quality(-1);
         $self->is_conjured && $self->quality(-1);
     }
+
+    $self->sell_in(-1);
+
+    if ( $self->sell_in < 0 ) {
+        if ( $self->is_aged_brie ) {
+            $self->quality('+1');
+        }
+        elsif ( $self->is_backstage_pass )
+        {
+            $self->quality(0);
+        }
+        else {
+            $self->quality(-1);
+        }
+    }
 }
 
 1;

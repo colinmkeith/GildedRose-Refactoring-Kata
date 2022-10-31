@@ -43,7 +43,7 @@ subtest 'Degradation Tests' => sub {
     my $sell_in_days = 2;
     my $quality      = 2;
     my $app          = initGR($sell_in_days, $quality);
-    my $item         = [ $app->items() ]->[0];
+    my $item         = $app->items(DEX_VEST);
 
     for my $day ( 1..2 ) {
       $app->update_quality();

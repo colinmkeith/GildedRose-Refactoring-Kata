@@ -18,11 +18,6 @@ sub new {
     return $this;
 }
 
-sub is_aged_brie {
-  my $self = shift;
-  return $self->name eq AGED_BRIE;
-}
-
 sub is_backstage_pass {
   my $self = shift;
   return $self->name eq BACKSTAGE_PASS;

@@ -2,12 +2,11 @@ package GildedRose;
 
 use strict;
 use warnings;
-use GildedRose::Item;
-use GildedRose::Item::Sulfuras;
 use GildedRose::Constants qw(:all);
 
 my $itemclasses = {
-  +SULFURAS() => 'GildedRose::Item::Sulfuras'
+  SULFURAS() => 'GildedRose::Item::Sulfuras',
+  _DEFAULT_ => 'GildedRose::Item'
 };
 
 sub new {
@@ -17,7 +16,9 @@ sub new {
         for my $item ( @{$attrs{items}} ) {
             $item->{name} || die "Error: Items must have a name\n";
 
-            my $itemclass = $itemclasses->{ $item->{name} } || 'GildedRose::Item';
+            my $itemclass = $itemclasses->{ $item->{name} }
+                         || $itemclasses->{_DEFAULT_};
+            eval "use $itemclass;";
             $item = $itemclass->new(
               name    => $item->{name},
               quality => $item->{quality},

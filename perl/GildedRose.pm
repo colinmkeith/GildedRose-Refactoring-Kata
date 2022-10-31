@@ -54,7 +54,10 @@ sub update_item_sell_in {
     $item->sell_in(-1);
 
     if ( $item->sell_in < 0 ) {
-        if ( !$item->is_aged_brie ) {
+        if ( $item->is_aged_brie ) {
+            $item->quality('+1');
+        }
+        else {
             if ( $item->is_backstage_pass )
             {
                 $item->quality(0);
@@ -62,9 +65,6 @@ sub update_item_sell_in {
             else {
                 $item->quality(-1);
             }
-        }
-        else {
-            $item->quality('+1');
         }
     }
 }

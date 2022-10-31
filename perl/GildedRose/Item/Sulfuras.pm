@@ -7,7 +7,7 @@ use parent 'GildedRose::Item';
 
 sub quality {
   my($self, $value) = @_;
-  $value =~ m/^-([0-9]+)$/ && return;
+  defined($value) && $value =~ m/^-([0-9]+)$/ && return;
   return $self->SUPER::quality($value);
 }
 

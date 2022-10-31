@@ -11,7 +11,8 @@ sub new {
 
     if( exists($attrs{items}) ) {
         for my $item ( @{$attrs{items}} ) {
-            if($item->{name} && $item->{name} eq SULFURAS) {
+            $item->{name} || die "Error: Items must have a name\n";
+            if( $item->{name} eq SULFURAS) {
                 $item = GildedRose::Item::Sulfuras->new(
                   name    => $item->{name},
                   quality => $item->{quality},

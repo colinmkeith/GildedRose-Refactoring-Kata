@@ -5,6 +5,8 @@ use warnings;
 
 use Test::More 0.96;
 
+use Data::Dumper;
+
 use_ok 'GildedRose';
 use_ok 'GildedRose::Constants';
 
@@ -34,6 +36,11 @@ subtest 'Instantiation Tests' => sub {
     is($item->name,    DEX_VEST,      'Item name correct');
     is($item->quality, $quality,      'Item quality correct');
     is($item->sell_in, $sell_in_days, 'Item sell_in correct');
+    $Data::Dumper::Indent = 0;
+    $Data::Dumper::Sortkeys = 1;
+    for my $item ($app->items) {
+      diag( Data::Dumper->Dump([ $item ]) );
+    }
 };
 
 =pod

@@ -18,11 +18,6 @@ sub new {
     return $this;
 }
 
-sub is_backstage_pass {
-  my $self = shift;
-  return $self->name eq BACKSTAGE_PASS;
-}
-
 sub is_conjured {
   my $self = shift;
   return $self->name =~ m/^Conjured /;
@@ -72,36 +67,13 @@ sub sell_in {
 
 sub age {
     my $self = shift;
-    if ( $self->is_backstage_pass )
-    {
-       if ( $self->sell_in < 0 ) {
-           $self->quality(0);
-       }
-       elsif ( $self->sell_in < 6 ) {
-           $self->quality('+3');
-       }
-       elsif ( $self->sell_in < 11 ) {
-           $self->quality('+2');
-       }
-       else {
-           $self->quality('+1');
-       }
-    }
-    else {
-        $self->quality(-1);
-        $self->is_conjured && $self->quality(-1);
-    }
+    $self->quality(-1);
+    $self->is_conjured && $self->quality(-1);
 
     $self->sell_in(-1);
 
     if ( $self->sell_in < 0 ) {
-        if ( $self->is_backstage_pass )
-        {
-            $self->quality(0);
-        }
-        else {
-            $self->quality(-1);
-        }
+        $self->quality(-1);
     }
 }
 

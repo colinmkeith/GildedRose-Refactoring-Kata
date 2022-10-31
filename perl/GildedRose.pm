@@ -5,9 +5,10 @@ use warnings;
 use GildedRose::Constants qw(:all);
 
 my $itemclasses = {
-  SULFURAS()  => 'GildedRose::Item::Sulfuras',
-  AGED_BRIE() => 'GildedRose::Item::AgedBrie',
-  _DEFAULT_   => 'GildedRose::Item'
+  SULFURAS()       => 'GildedRose::Item::Sulfuras',
+  AGED_BRIE()      => 'GildedRose::Item::AgedBrie',
+  BACKSTAGE_PASS() => 'GildedRose::Item::BackstagePass',
+  _DEFAULT_        => 'GildedRose::Item'
 };
 
 sub new {

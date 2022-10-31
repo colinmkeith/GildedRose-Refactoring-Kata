@@ -38,12 +38,12 @@ sub quality {
       $value = ($self->{quality} || 0) - $1;
     }
 
+    # Enforce quality limits
+    $value > 50 && ($value = 50);
+    $value <  0 && ($value = 0);
+
     $self->{quality} = $value;
   }
-
-  # Enforce quality limits
-  $self->{quality} > 50 && ($self->{quality} = 50);
-  $self->{quality} <  0 && ($self->{quality} = 0);
 
   return $self->{quality};
 }
@@ -53,10 +53,10 @@ sub sell_in {
   if(defined($value) ) {
 
     if($value =~ m/^\+([0-9]+)$/) {
-      $value = $self->{sell_in} + $1;
+      $value = ($self->{sell_in} || 0) + $1;
     }
     elsif($value =~ m/^-([0-9]+)$/) {
-      $value = $self->{sell_in} - $1;
+      $value = ($self->{sell_in} || 0) - $1;
     }
 
     $self->{sell_in} = $value;

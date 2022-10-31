@@ -156,9 +156,6 @@ subtest 'Degradation Tests for special cases: Sulfuras' => sub {
 
 =pod
   - "Aged Brie" actually increases in Quality the older it gets
-  - "Backstage passes", like aged brie, increases in Quality as its SellIn value approaches;
-  Quality increases by 2 when there are 10 days or less and by 3 when there are 5 days or less but
-  Quality drops to 0 after the concert
 =cut
 subtest 'Degradation Tests for special cases: Aged Brie' => sub {
     my $sell_in_days = 2;
@@ -173,10 +170,11 @@ subtest 'Degradation Tests for special cases: Aged Brie' => sub {
     $expected_quality = $quality + 1;
     is($res_quality, $expected_quality, 'quality for '.  AGED_BRIE .' increased after 1 day');
 
+    # Age 4 days (sell in -3 days)
     for (0..3) {
       $app->update_quality();
     }
-    $res_quality = $app->items(SULFURAS)->quality;
+    $res_quality = $app->items(AGED_BRIE)->quality;
     $expected_quality = $quality + 5;
     is($res_quality, $quality, 'quality for '.  AGED_BRIE .' continued to increase after sell by date');
 };

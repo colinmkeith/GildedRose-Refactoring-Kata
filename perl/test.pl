@@ -205,13 +205,17 @@ subtest 'Degradation Tests for special cases: Backstage Passes' => sub {
     $app->update_quality(); # 19 days
     $res_quality = $app->items(BACKSTAGE_PASS)->quality;
     $expected_quality = $quality + 1;
-    is($res_quality, $expected_quality, 'quality for '.  BACKSTAGE_PASS .' increased by 1 after 1 day');
+    is($res_quality, $expected_quality, 'quality for '.  BACKSTAGE_PASS .' increased by 1 after 1 day with 19 days left');
 
-    # Skip forward 10 days
-    for (0..9) {
+    # Skip forward 9 days
+    for (0..8) {
       $app->update_quality();
     }
+    $res_quality = $app->items(BACKSTAGE_PASS)->quality;
+    $expected_quality = $quality + 10;
+    is($res_quality, $expected_quality, 'quality for '.  BACKSTAGE_PASS .' increased by 10 after 10 days with 10 days left');
 
+    $app->update_quality(); # 10 days
     $res_quality = $app->items(BACKSTAGE_PASS)->quality;
     $sell_in     = $app->items(BACKSTAGE_PASS)->sell_in;
     $expected_quality = $quality + 10 + 2;

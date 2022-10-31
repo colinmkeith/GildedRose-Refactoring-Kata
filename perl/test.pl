@@ -184,6 +184,10 @@ subtest 'Degradation Tests for special cases: Aged Brie' => sub {
     $res_quality = $app->items(AGED_BRIE)->quality;
     $expected_quality = $quality + 5;
     is($res_quality, $expected_quality, 'quality for '.  AGED_BRIE .' continued to increase after sell by date');
+
+    my $res_sell_in = $app->items(AGED_BRIE)->sell_in;
+    my $expected_sell_in = $sell_in_days - 5;
+    is($res_sell_in, $expected_sell_in, 'sell_in for '.  AGED_BRIE .' continued to increase after sell by date');
 };
 
 =pod

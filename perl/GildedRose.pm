@@ -6,26 +6,23 @@ use GildedRose::Item;
 use GildedRose::Item::Sulfuras;
 use GildedRose::Constants qw(:all);
 
+my $itemclasses = {
+  +SULFURAS() => 'GildedRose::Item::Sulfuras'
+};
+
 sub new {
     my ( $class, %attrs ) = @_;
 
     if( exists($attrs{items}) ) {
         for my $item ( @{$attrs{items}} ) {
             $item->{name} || die "Error: Items must have a name\n";
-            if( $item->{name} eq SULFURAS) {
-                $item = GildedRose::Item::Sulfuras->new(
-                  name    => $item->{name},
-                  quality => $item->{quality},
-                  sell_in => $item->{sell_in},
-                );
-            }
-            else {
-                $item = GildedRose::Item->new(
-                  name    => $item->{name},
-                  quality => $item->{quality},
-                  sell_in => $item->{sell_in},
-                );
-            }
+
+            my $itemclass = $itemclasses->{ $item->{name} } || 'GildedRose::Item';
+            $item = $itemclass->new(
+              name    => $item->{name},
+              quality => $item->{quality},
+              sell_in => $item->{sell_in},
+            );
         }
     }
 

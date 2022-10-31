@@ -42,10 +42,10 @@ sub quality {
   my($self, $value) = @_;
   if(defined($value)) {
     if($value =~ m/^\+([0-9]+)$/) {
-      $value = $self->{quality} + $1;
+      $value = ($self->{quality} || 0) + $1;
     }
     elsif($value =~ m/^-([0-9]+)$/) {
-      $value = $self->{quality} - $1;
+      $value = ($self->{quality} || 0) - $1;
     }
 
     $self->{quality} = $value;

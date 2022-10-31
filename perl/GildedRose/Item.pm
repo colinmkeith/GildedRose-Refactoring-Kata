@@ -77,11 +77,7 @@ sub sell_in {
 
 sub age {
     my $self = shift;
-    if ( $self->is_aged_brie )
-    {
-        $self->quality('+1');
-    }
-    elsif ( $self->is_backstage_pass )
+    if ( $self->is_backstage_pass )
     {
        if ( $self->sell_in < 0 ) {
            $self->quality(0);
@@ -108,7 +104,7 @@ sub age {
         {
             $self->quality(0);
         }
-        elsif( !$self->is_aged_brie) {
+        else {
             $self->quality(-1);
         }
     }

@@ -18,11 +18,6 @@ sub new {
     return $this;
 }
 
-sub is_conjured {
-  my $self = shift;
-  return $self->name =~ m/^Conjured /;
-}
-
 sub name {
   my $self = shift;
   return $self->{name};
@@ -68,10 +63,9 @@ sub sell_in {
 sub age {
     my $self = shift;
     $self->quality(-1);
-    $self->is_conjured && $self->quality(-1);
-
     $self->sell_in(-1);
 
+    # Once the sell by date has passed, Quality degrades twice as fast
     if ( $self->sell_in < 0 ) {
         $self->quality(-1);
     }

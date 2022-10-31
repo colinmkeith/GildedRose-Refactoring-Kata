@@ -8,7 +8,7 @@ my $itemclasses = {
   SULFURAS()       => 'GildedRose::Item::Sulfuras',
   AGED_BRIE()      => 'GildedRose::Item::AgedBrie',
   BACKSTAGE_PASS() => 'GildedRose::Item::BackstagePass',
-  _DEFAULT_        => 'GildedRose::Item'
+  DEFAULT()        => 'GildedRose::Item'
 };
 
 sub new {
@@ -19,7 +19,7 @@ sub new {
             $item->{name} || die "Error: Items must have a name\n";
 
             my $itemclass = $itemclasses->{ $item->{name} }
-                         || $itemclasses->{_DEFAULT_};
+                         || $itemclasses->{+DEFAULT};
             eval "use $itemclass;";
             $item = $itemclass->new(
               name    => $item->{name},
